@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://b860nn6pl1ybr"]
+
+[ext_resource type="Script" path="res://Scripts/Player.cs" id="1_fwjms"]
+[ext_resource type="Texture2D" uid="uid://cnjyq4qpej6y" path="res://robot.png" id="2_3ytfi"]
+[ext_resource type="Script" path="res://Scripts/PlayerAnimation.cs" id="3_jbvpo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_04ixy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfeld"]
+atlas = ExtResource("2_3ytfi")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffdrp"]
+atlas = ExtResource("2_3ytfi")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qn4mx"]
+atlas = ExtResource("2_3ytfi")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s4ouf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfeld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffdrp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qn4mx")
+}],
+"loop": true,
+"name": &"bite",
+"speed": 5.0
+}]
+
+[node name="Player" type="Node2D"]
+position = Vector2(1, 0)
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("1_fwjms")
+speed = 5.0
+bulletPath = "res://Scenes/Bullet.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+scale = Vector2(2.5, 2.5)
+shape = SubResource("CircleShape2D_04ixy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_s4ouf")
+animation = &"bite"
+script = ExtResource("3_jbvpo")

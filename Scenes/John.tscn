@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://gf2pnnp8kcfc"]
+
+[ext_resource type="Script" path="res://Scripts/John.cs" id="1_hnx3i"]
+[ext_resource type="Texture2D" uid="uid://bsrx614rmrggj" path="res://john.png" id="2_leclh"]
+[ext_resource type="PackedScene" uid="uid://23pi1ai08ab" path="res://Scenes/Shaker.tscn" id="2_r2xpe"]
+[ext_resource type="Script" path="res://Scripts/JohnAnimation.cs" id="3_tsbcc"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlcf3"]
+radius = 9.1
+height = 24.2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkt2a"]
+atlas = ExtResource("2_leclh")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3crb"]
+atlas = ExtResource("2_leclh")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8tfa"]
+atlas = ExtResource("2_leclh")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwe5y"]
+atlas = ExtResource("2_leclh")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_staq2"]
+atlas = ExtResource("2_leclh")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nnqri"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkt2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a3crb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8tfa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwe5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_staq2")
+}],
+"loop": true,
+"name": &"eye_roll",
+"speed": 5.0
+}]
+
+[node name="John" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+max_contacts_reported = 5
+contact_monitor = true
+freeze = true
+freeze_mode = 1
+script = ExtResource("1_hnx3i")
+speed = 100.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(4, 0)
+scale = Vector2(10, 10)
+shape = SubResource("CapsuleShape2D_qlcf3")
+
+[node name="Shaker" parent="RigidBody2D" instance=ExtResource("2_r2xpe")]
+shakeDecay = 0.8
+shakeAmplitude = 10.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D/Shaker"]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_nnqri")
+animation = &"eye_roll"
+script = ExtResource("3_tsbcc")
+
+[connection signal="Hit" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
+[connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="OnBodyEntered"]
