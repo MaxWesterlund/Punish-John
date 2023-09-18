@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://gf2pnnp8kcfc"]
+[gd_scene load_steps=10 format=3 uid="uid://gf2pnnp8kcfc"]
 
 [ext_resource type="Script" path="res://Scripts/John.cs" id="1_hnx3i"]
 [ext_resource type="Texture2D" uid="uid://bsrx614rmrggj" path="res://john.png" id="2_leclh"]
@@ -7,49 +7,28 @@
 [ext_resource type="Script" path="res://Scripts/HealthBar.cs" id="5_wy7bh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlcf3"]
-radius = 9.1
-height = 24.2
+radius = 4.6
+height = 12.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hkt2a"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_t481l"]
 atlas = ExtResource("2_leclh")
-region = Rect2(0, 0, 64, 64)
+region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a3crb"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov52m"]
 atlas = ExtResource("2_leclh")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t8tfa"]
-atlas = ExtResource("2_leclh")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_iwe5y"]
-atlas = ExtResource("2_leclh")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_staq2"]
-atlas = ExtResource("2_leclh")
-region = Rect2(256, 0, 64, 64)
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nnqri"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hkt2a")
+"texture": SubResource("AtlasTexture_t481l")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a3crb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t8tfa")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_iwe5y")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_staq2")
+"texture": SubResource("AtlasTexture_ov52m")
 }],
 "loop": true,
-"name": &"eye_roll",
+"name": &"idle",
 "speed": 5.0
 }]
 
@@ -64,19 +43,20 @@ script = ExtResource("1_hnx3i")
 speed = 100.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(4, 0)
+rotation = -1.5708
 scale = Vector2(10, 10)
 shape = SubResource("CapsuleShape2D_qlcf3")
 
 [node name="Shaker" parent="RigidBody2D" instance=ExtResource("2_r2xpe")]
 shakeDecay = 0.8
 shakeAmplitude = 10.0
+rotationAmplitude = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D/Shaker"]
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_nnqri")
-animation = &"eye_roll"
+animation = &"idle"
 script = ExtResource("3_tsbcc")
 
 [node name="Control" type="Control" parent="."]
@@ -87,8 +67,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
-layout_mode = 0
+[node name="Shaker" parent="Control" instance=ExtResource("2_r2xpe")]
+shakeDecay = 0.6
+shakeAmplitude = 8.0
+
+[node name="ColorRect" type="ColorRect" parent="Control/Shaker"]
 offset_top = 20.0
 offset_right = 40.0
 offset_bottom = 50.0
@@ -96,6 +79,8 @@ color = Color(0.760784, 0, 0, 1)
 script = ExtResource("5_wy7bh")
 maxSize = 0.7
 
-[connection signal="UpdateHealth" from="RigidBody2D" to="Control/ColorRect" method="OnHealthChange"]
+[connection signal="Hit" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
+[connection signal="Hit" from="RigidBody2D" to="Control/Shaker" method="StartShake"]
+[connection signal="UpdateHealth" from="RigidBody2D" to="Control/Shaker/ColorRect" method="OnHealthChange"]
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="OnBodyEntered"]
 [connection signal="property_list_changed" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]

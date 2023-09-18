@@ -4,6 +4,7 @@ using System;
 public partial class Shaker : Node2D {
 	[Export] float shakeDecay;
 	[Export] float shakeAmplitude;
+	[Export] float rotationAmplitude;
 
 	float shakeAmount = 0;
 
@@ -12,15 +13,18 @@ public partial class Shaker : Node2D {
 	}
 
 	public override void _Process(double delta) {
-		ScreenShake(shakeAmplitude, shakeAmount);
+		Shake(shakeAmplitude, rotationAmplitude, shakeAmount);
 		shakeAmount *= shakeDecay;
 	}
 	 
-	void ScreenShake(float amp, float amount) {
+	void Shake(float shakeAmp, float rotAmp, float amount) {
 		RandomNumberGenerator rng = new();
-		float x = rng.RandfRange(-1, 1) * amp;
-		float y = rng.RandfRange(-1, 1) * amp;
+		float xPos = rng.RandfRange(-1, 1) * shakeAmp;
+		float yPos = rng.RandfRange(-1, 1) * shakeAmp;
 
-		Position = new Vector2(x, y) * amount;
+		float rot = rng.RandfRange(-1, 1) * Mathf.DegToRad(rotAmp);
+
+		Position = new Vector2(xPos, yPos) * amount;
+		Rotation = rot * amount;
 	}
 }

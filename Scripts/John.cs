@@ -8,6 +8,7 @@ public partial class John : RigidBody2D {
 	[Export] float speed;
 
 	[Signal] public delegate void UpdateHealthEventHandler(int health);
+	[Signal] public delegate void HitEventHandler();
 
 	float minXPos;
 	float minYPos;
@@ -51,5 +52,6 @@ public partial class John : RigidBody2D {
 		health -= 5;
 
 		EmitSignal(SignalName.UpdateHealth, health);
+		EmitSignal(SignalName.Hit);
 	}
 }
