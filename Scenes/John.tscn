@@ -78,5 +78,30 @@ sprite_frames = SubResource("SpriteFrames_nnqri")
 animation = &"eye_roll"
 script = ExtResource("3_tsbcc")
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [connection signal="Hit" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="OnBodyEntered"]
