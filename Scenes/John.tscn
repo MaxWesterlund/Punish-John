@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://gf2pnnp8kcfc"]
+[gd_scene load_steps=13 format=3 uid="uid://gf2pnnp8kcfc"]
 
 [ext_resource type="Script" path="res://Scripts/John.cs" id="1_hnx3i"]
 [ext_resource type="Texture2D" uid="uid://bsrx614rmrggj" path="res://john.png" id="2_leclh"]
 [ext_resource type="PackedScene" uid="uid://23pi1ai08ab" path="res://Scenes/Shaker.tscn" id="2_r2xpe"]
 [ext_resource type="Script" path="res://Scripts/JohnAnimation.cs" id="3_tsbcc"]
+[ext_resource type="Script" path="res://Scripts/HealthBar.cs" id="5_wy7bh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlcf3"]
 radius = 9.1
@@ -80,28 +81,21 @@ script = ExtResource("3_tsbcc")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="Panel" type="Panel" parent="Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="Hit" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 40.0
+offset_bottom = 50.0
+color = Color(0.760784, 0, 0, 1)
+script = ExtResource("5_wy7bh")
+maxSize = 0.7
+
+[connection signal="UpdateHealth" from="RigidBody2D" to="Control/ColorRect" method="OnHealthChange"]
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="OnBodyEntered"]
+[connection signal="property_list_changed" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]

@@ -7,7 +7,7 @@ public partial class John : RigidBody2D {
 
 	[Export] float speed;
 
-	[Signal] public delegate void HitEventHandler();
+	[Signal] public delegate void UpdateHealthEventHandler(int health);
 
 	float minXPos;
 	float minYPos;
@@ -15,6 +15,8 @@ public partial class John : RigidBody2D {
 	float maxYPos;
 
 	Vector2 targetPos;
+	
+	int health = 100;
 
 	public override void _Ready() {
 		sprite = GetNode<AnimatedSprite2D>("Shaker/AnimatedSprite2D");
@@ -45,6 +47,9 @@ public partial class John : RigidBody2D {
 		if (body.GetParent().Name != "Player") {
 			return;
 		}
-		EmitSignal(SignalName.Hit);
+
+		health -= 5;
+
+		EmitSignal(SignalName.UpdateHealth, health);
 	}
 }
