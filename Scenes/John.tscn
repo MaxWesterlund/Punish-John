@@ -50,7 +50,6 @@ shape = SubResource("CapsuleShape2D_qlcf3")
 [node name="Shaker" parent="RigidBody2D" instance=ExtResource("2_r2xpe")]
 shakeDecay = 0.8
 shakeAmplitude = 10.0
-rotationAmplitude = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D/Shaker"]
 texture_filter = 1
@@ -81,6 +80,5 @@ maxSize = 0.7
 
 [connection signal="Hit" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
 [connection signal="Hit" from="RigidBody2D" to="Control/Shaker" method="StartShake"]
-[connection signal="UpdateHealth" from="RigidBody2D" to="Control/Shaker/ColorRect" method="OnHealthChange"]
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="OnBodyEntered"]
 [connection signal="property_list_changed" from="RigidBody2D" to="RigidBody2D/Shaker" method="StartShake"]
